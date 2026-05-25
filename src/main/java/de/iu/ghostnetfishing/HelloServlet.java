@@ -1,4 +1,4 @@
-package de.iu.ghostnetfishing.ghostnetfishing;
+package de.iu.ghostnetfishing;
 
 import java.io.*;
 
