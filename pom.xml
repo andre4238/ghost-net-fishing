@@ -25,10 +25,12 @@
             <version>4.0.1</version>
             <scope>provided</scope>
         </dependency>
+        <!-- Mojarra-Impl wird von Payara bereitgestellt -> nicht ins WAR bündeln -->
         <dependency>
             <groupId>org.glassfish</groupId>
             <artifactId>jakarta.faces</artifactId>
             <version>4.0.7</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Servlet API -->
@@ -39,11 +41,20 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- CDI API – für @Inject, @Named, @ApplicationScoped etc. -->
+        <!-- CDI API – für @ApplicationScoped, @Observes etc. -->
         <dependency>
             <groupId>jakarta.enterprise</groupId>
             <artifactId>jakarta.enterprise.cdi-api</artifactId>
             <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- jakarta.inject API – für @Inject und @Named
+             (kam vorher nur transitiv über weld-se-core; jetzt explizit) -->
+        <dependency>
+            <groupId>jakarta.inject</groupId>
+            <artifactId>jakarta.inject-api</artifactId>
+            <version>2.0.1</version>
             <scope>provided</scope>
         </dependency>
 
@@ -75,18 +86,16 @@
             <version>4.0.5</version>
         </dependency>
 
-        <!-- Weld – CDI-Implementierung -->
-        <dependency>
-            <groupId>org.jboss.weld.se</groupId>
-            <artifactId>weld-se-core</artifactId>
-            <version>5.1.2.Final</version>
-        </dependency>
+        <!-- CDI (Weld) wird von Payara bereitgestellt - kein weld-se-core im WAR
+             (weld-se-core ist nur für Java-SE-Bootstrap und kollidiert mit dem Container) -->
 
-        <!-- MySQL-Treiber -->
+        <!-- MySQL-Treiber – wird von Payara bereitgestellt (domain1/lib),
+             daher nicht ins WAR bündeln -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>
             <version>8.4.0</version>
+            <scope>provided</scope>
         </dependency>
 
         <!-- JUnit (Tests) -->

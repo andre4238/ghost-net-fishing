@@ -8,22 +8,29 @@
 
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
+        <!-- Datenbank-Verbindung ueber den in Payara konfigurierten
+             JDBC-Pool (Resource jdbc/ghostnet -> MySQL ghostnetfishing).
+             Bei RESOURCE_LOCAL ist das die non-jta-data-source. -->
+        <non-jta-data-source>jdbc/ghostnet</non-jta-data-source>
+
         <!-- Entities explizit gelistet -->
         <class>de.iu.ghostnetfishing.model.Person</class>
         <class>de.iu.ghostnetfishing.model.Geisternetz</class>
 
         <properties>
-            <!-- Datenbank-Verbindung -->
-            <property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ghostnetfishing?useSSL=false&amp;serverTimezone=UTC"/>
-            <property name="jakarta.persistence.jdbc.user" value="ghostnet_user"/>
-            <property name="jakarta.persistence.jdbc.password" value="GhostNet2026!"/>
-
             <!-- Hibernate-Einstellungen -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.format_sql" value="true"/>
+
+            <!-- Load-Time-Bytecode-Enhancement abschalten.
+                 Sonst registriert Payara Hibernates Klassen-Transformer, der beim
+                 Deployen einen ClassCircularityError ausloest (Payara-Bug FISH-7338).
+                 Fuer diese App wird die Enhancement nicht benoetigt. -->
+            <property name="hibernate.enhancer.enableDirtyTracking" value="false"/>
+            <property name="hibernate.enhancer.enableLazyInitialization" value="false"/>
+            <property name="hibernate.enhancer.enableAssociationManagement" value="false"/>
         </properties>
 
     </persistence-unit>
